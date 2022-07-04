@@ -1,10 +1,6 @@
 <template>
   <v-navbar/>
-  <v-main>
-    <v-card-text>
-      <v-socket></v-socket>
-    </v-card-text>
-  </v-main>
+  <v-socket></v-socket>
 </template>
 
 <script>

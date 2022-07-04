@@ -1,36 +1,28 @@
 <template>
-<!--  <div>-->
-<!--    <v-list>-->
-<!--      <v-list-subheader>菜单栏</v-list-subheader>-->
-<!--      <v-list-item-->
-<!--          v-for="(message, i) in messages"-->
-<!--          :key="i"-->
-<!--          :value="message"-->
-<!--          active-color="primary"-->
-<!--      >-->
-<!--        <v-list-item-title v-text="message"></v-list-item-title>-->
-<!--      </v-list-item>-->
-<!--    </v-list>-->
-<!--  </div>-->
-  <v-timeline side="end" align="start">
-    <v-timeline-item
-        dot-color="pink"
-        size="small"
-        v-for="(message, i) in messages"
-        :key="i"
-        :value="message"
+  <v-card>
+    <v-tabs
+        v-model="tab"
     >
-      <div class="d-flex">
-        <strong class="mr-4">5pm</strong>
-        <div>
-          <strong>New Icon</strong>
-          <div class="text-caption">
-            {{ message }}
-          </div>
-        </div>
-      </div>
-    </v-timeline-item>
-  </v-timeline>
+      <v-tab
+          v-for="tabPage in tabPages"
+          :key="tabPage"
+          :value="tabPage"
+      >
+        {{ tabPage }}
+      </v-tab>
+    </v-tabs>
+    <v-window v-model="tab">
+      <v-window-item
+          v-for="tabPage in tabPages"
+          :key="tabPage"
+          :value="tabPage"
+      >
+        <v-card flat>
+          <v-card-text v-for="message in messages">{{ message }}</v-card-text>
+        </v-card>
+      </v-window-item>
+    </v-window>
+  </v-card>
 </template>
 
 <script>
@@ -40,7 +32,12 @@ export default {
     return {
       websocket: null,
       messages: [],
-      userId: '001'
+      userId: '001',
+
+      tab: null,
+      tabPages: [
+        'personal', 'all'
+      ]
     }
   },
   mounted() {
@@ -81,6 +78,7 @@ export default {
     },
     setOncloseMessage () {
       console.log('WebSocket连接关闭    状态码：' + this.websocket.readyState)
+      this.initWebSocket()
     },
     onbeforeunload () {
       this.closeWebSocket()

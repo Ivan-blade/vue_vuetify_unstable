@@ -1,6 +1,8 @@
 <template>
   <v-navbar/>
-  <v-socket></v-socket>
+  <v-content>
+    <router-view></router-view>
+  </v-content>
 </template>
 
 <script>
@@ -9,8 +11,7 @@ import SocketUI from "../components/SocketUI.vue";
 export default {
   name: "Home",
   components: {
-    'v-navbar': NavBar,
-    'v-socket': SocketUI
+    'v-navbar': NavBar
   }
 }
 </script>

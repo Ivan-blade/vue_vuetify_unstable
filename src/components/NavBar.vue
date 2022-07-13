@@ -21,7 +21,8 @@
             v-for="(item, i) in items"
             :key="i"
             :value="item"
-            active-color="primary"
+            active-color="grey"
+            @click=swapRouter(item.route)
         >
           <v-list-item-avatar start>
             <v-icon :icon="item.icon"></v-icon>
@@ -34,6 +35,7 @@
 </template>
 
 <script>
+import router from "../router/index.js";
 import { getRequest } from '../utils/api.js'
 export default {
   name: 'NavBar',
@@ -41,16 +43,18 @@ export default {
     return {
       navShow: false,
       items: [
-        { text: 'Real-Time', icon: 'mdi-clock' , route: "/"},
-        { text: 'Audience', icon: 'mdi-account', route: "/" },
+        { text: 'SocketUI', icon: 'mdi-clock' , route: "/socketUI"},
+        { text: 'Time-Line', icon: 'mdi-account', route: "/timeline" },
         { text: 'Conversions', icon: 'mdi-flag', route: "/" },
       ]
     }
   },
   methods: {
     logout () {
-      getRequest("/logout")
-      this.$router.push({path: '/'});
+      router.push({path: '/'});
+    },
+    swapRouter(val) {
+      router.push({path: val});
     }
   },
 }

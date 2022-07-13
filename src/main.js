@@ -1,11 +1,13 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
+import router from './router'
 import { loadFonts } from './plugins/webfontloader'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 loadFonts()
 
 createApp(App)
-  .use(vuetify)
-  .mount('#app')
+    .use(vuetify)
+    .use(router)
+    .mount('#app')

@@ -2,30 +2,38 @@
   <v-card>
     <v-tabs
         v-model="tab"
+        centered
+        stacked
     >
-      <v-tab
-          v-for="tabPage in tabPages"
-          :key="tabPage"
-          :value="tabPage"
-      >
-        {{ tabPage }}
-      </v-tab>
+        <v-tab
+            v-for="tabPage in tabPages"
+            :key="tabPage"
+            :value="tabPage"
+            flat
+        >
+          {{ tabPage }}
+        </v-tab>
+
     </v-tabs>
+    <v-btn icon class="pos_abs_left" @click="viewMode = !viewMode">
+      <v-icon>mdi-call-split</v-icon>
+    </v-btn>
     <v-window v-model="tab">
       <v-window-item
           v-for="tabPage in tabPages"
           :key="tabPage"
           :value="tabPage"
       >
-        <v-card flat>
-          <v-card-text v-for="message in messages">{{ message }}</v-card-text>
-        </v-card>
+        <v-list-card :messages="messages" v-show="viewMode"/>
+        <v-timeLine :messages="messages" v-show="!viewMode"/>
       </v-window-item>
     </v-window>
   </v-card>
 </template>
 
 <script>
+import TimeLine from "./TimeLine.vue";
+import ListContent from "./ListContent.vue";
 export default {
   name: "SocketUI",
   data() {
@@ -33,16 +41,19 @@ export default {
       websocket: null,
       messages: [],
       userId: '001',
-
       tab: null,
       tabPages: [
-        'personal', 'all'
-      ]
+        'all','personal'
+      ],
+      viewMode: true
     }
+  },
+  components: {
+    'v-timeLine': TimeLine,
+    'v-list-card': ListContent
   },
   mounted() {
     if ('WebSocket' in window) {
-      this.websocket = new WebSocket('ws://localhost:8080/websocket/' + this.userId)
       this.initWebSocket()
     } else {
       alert('当前浏览器 Not support websocket')
@@ -50,6 +61,7 @@ export default {
   },
   methods: {
     initWebSocket () {
+      this.websocket = new WebSocket('ws://localhost:8080/websocket/' + this.userId)
       // 连接错误
       this.websocket.onerror = this.setErrorMessage
 
@@ -94,6 +106,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped >
+.pos_abs_left {
+  position: absolute;
+  top: 17px;
+  right: 30px;
+}
 </style>
